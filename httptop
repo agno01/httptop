@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 #
 
-=head1 NAME 
+=head1 NAME
 
 httptop - display top(1)-like per-client HTTP access stats
 
@@ -24,7 +24,7 @@ my $Update = 2; # update every n secs
 my $Backtrack = 250; # backtrack n lines on startup
 my @Paths = qw(
 %
-/title/%/logs/access_log 
+/title/%/logs/access_log
 /var/log/httpd/%/access_log
 /usr/local/apache/logs/%/access_log
 );
@@ -50,7 +50,7 @@ my $show_help = 0;
 my $order = \&by_hits_per;
 my $Help = "htlwufd?q";
 my %Keys = (
-h => [ "Order by hits/second" => sub { $order = \&by_hits_per } ], 
+h => [ "Order by hits/second" => sub { $order = \&by_hits_per } ],
 t => [ "Order by total recorded hits" => sub { $order = \&by_total } ],
 l => [ "Order by most recent hits" => sub { $order = \&by_age } ],
 w => [ "Show remote host" => sub { $index = "Host" } ],
@@ -83,10 +83,10 @@ END { ReadMode 0 };
 
 ### Subs.
 
-sub refresh_output 
+sub refresh_output
 {
 my ( $cols, $rows ) = GetTerminalSize;
-my $show = $rows - 3; 
+my $show = $rows - 3;
 my $count = $show;
 my $now = (shift || time);
 
@@ -117,8 +117,8 @@ $first = $Max_Index_Width if $Max_Index_Width < $first;
 print $Term{START_TITLE}, "Monitoring $spec at: ", scalar localtime, $Term{END_TITLE} if $ENV{TERM} eq "xterm"; # UGLY!!!
 
 my $help = "Help/?";
-my $head = sprintf( "%-${first}s %6s %4s %4s %s (%d total)", 
-$index, qw{ Hits/s Tot Last }, $last_field, 
+my $head = sprintf( "%-${first}s %6s %4s %4s %s (%d total)",
+$index, qw{ Hits/s Tot Last }, $last_field,
 scalar keys %{$hist{$index}}
 );
 
@@ -131,7 +131,7 @@ print @Term{"HOME", "START_RV"}, $head, " " x ($cols - length($head) - length($h
 for ( @list ) {
 # $_->{_Ttl}++;
 
-my $line = sprintf( "%-${first}s %6.3f %4d %3d %s", 
+my $line = sprintf( "%-${first}s %6.3f %4d %3d %s",
 substr( $_->{$index}, 0, $Max_Index_Width ), @$_{(qw{ Rate Total Last }, $last_field)} );
 if ( length($line) > $cols ) {
 substr( $line, $cols - 1 ) = "";
@@ -142,7 +142,7 @@ print $line, "\n";
 }
 
 print " " x $cols, "\n" while $count++ < $show;
-} 
+}
 
 sub process_line
 {
@@ -173,7 +173,7 @@ return unless $hit_t[2] == ( $now_t[2] + 1900 )
 and $hit_t[1] eq $Months[ $now_t[1] ]
 and $hit_t[0] == $now_t[0];
 
-splice( @hit_t, 0, 3 ); 
+splice( @hit_t, 0, 3 );
 splice( @now_t, 0, 3 );
 
 # Work backward to the UNIX time of the hit.
@@ -218,9 +218,9 @@ last if -r $spec;
 }
 die "No access_log $ARGV[0] found.\n" unless -r $spec;
 
-my $file = File::Tail->new( 
-name => $spec, 
-interval => $Update / 2, 
+my $file = File::Tail->new(
+name => $spec,
+interval => $Update / 2,
 maxinterval => $Update,
 tail => $Backtrack,
 nowait => 1
@@ -257,17 +257,17 @@ display_help;
 $show_help++; # Don't display help again.
 } elsif ( $now - $last_update > $Update and not $show_help ) {
 $last_update = $now;
-refresh_output( $now ); 
+refresh_output( $now );
 }
 }
 
-__END_  _
+__END__
 
 =head1 DESCRIPTION
 
 httptop is intended to be a top(1)-equivalent for httpd access activity.
 
-httptop should be invoked with the path to an Apache access_log, or alternately a string that uniquely identifies the directory in which to find the access_log. The search paths can be configured in the source. 
+httptop should be invoked with the path to an Apache access_log, or alternately a string that uniquely identifies the directory in which to find the access_log. The search paths can be configured in the source.
 
 httptop has limited flexibility for dealing with logs of different formats. Run 'httptop' without options to see which format names are available.
 
