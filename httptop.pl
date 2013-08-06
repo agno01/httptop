@@ -20,8 +20,8 @@ use strict;
 
 ### Defaults you might be interested in adjusting.
 
-my $Update = 2; # update every n secs
-my $Backtrack = 250; # backtrack n lines on startup
+my $Update = 5; # update every n secs
+my $Backtrack = 1000; # backtrack n lines on startup
 my @Paths = qw(
 %
 /title/%/logs/access_log
